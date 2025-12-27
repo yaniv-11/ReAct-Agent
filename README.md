@@ -44,22 +44,7 @@ Structured output parsing (HF-compatible)
 
 Pretty iteration logs for full transparency
 
-📊 Architecture Overview
-text
-┌──────────────┐
-│  Reasoning   │ ← LLM decides next action
-└──────┬───────┘
-       │
-       ▼
-┌──────────────┐
-│    Router    │ ← Routes based on action
-└──────┬───────┘
-       │
-┌─────▼──────────┐
-│   Tool Nodes   │ ← Wikipedia / Search
-└─────┬──────────┘
-      │
-      └────────────► Back to Reasoning
+
 🧭 Design Principles
 Reasoning ≠ Execution – LLM thinks, tools act
 
@@ -167,19 +152,7 @@ Lionel Messi was born in Rosario, Argentina. The capital of Argentina is Buenos 
 
 The agent adapts its strategy when tools fail and stops only when sufficient information is obtained.
 
-📁 Project Structure
-text
-app/
-├── graph.py              # LangGraph definition
-├── state.py              # Agent state schema
-├── llm.py                # LLM + output parser
-├── schema.py             # Pydantic reasoning schema
-├── prompts.py            # ReAct prompt
-├── nodes/
-│   ├── reasoning.py      # LLM reasoning node
-│   ├── tools.py          # Wikipedia & Search nodes
-│   └── router.py         # Conditional routing
-main.py                   # Run the agent
+
 🚀 Installation & Usage
 Prerequisites
 Python 3.9+
@@ -202,63 +175,6 @@ bash
 python main.py 
 
 
-
-============================================================
-Starting ReAct Agent
-Query: What is the capital of the country where Messi was born?
-============================================================
-
-LLM Response: thoughts="I need to answer: 'What is the capital of the country where Messi was born?'. This requires two facts: 1) Where was Lionel Messi born? 2) What is the capital of that country? I don't have this information in my internal knowledge, so I need to fetch it. A factual, encyclopedic source like Wikipedia is suitable for this." action='wikipedia' reasons='Need factual birthplace and capital information.' action_inputs='Lionel Messi birthplace' final=None
-LLM Response: thoughts="The user question requires two facts: where Lionel Messi was born, and the capital of that country. The previous observations provided information about Andrés Iniesta and Brenden Aaronson, which are irrelevant to Messi's birthplace. I need to search for Messi's birthplace first, then the capital of that country. A factual search is needed." action='search' reasons="Previous observations do not contain the required information. Need to search for Messi's birthplace and then the capital." action_inputs='Lionel Messi birthplace' final=None
-LLM Response: thoughts='I have the observation that Messi was born in Rosario, Argentina. Now I need the capital of Argentina. This is a factual, encyclopedic question, so I can use Wikipedia to get the capital city.' action='wikipedia' reasons="I have Messi's birthplace from the observation, but I need the capital of Argentina to answer the question fully." action_inputs='capital of Argentina' final=None
-LLM Response: thoughts='I have gathered the necessary information: Messi was born in Rosario, Argentina, and the capital of Argentina is Buenos Aires. This is sufficient to answer the question.' action='none' reasons='All required facts are confirmed from previous observations.' action_inputs=None final='Lionel Messi was born in Rosario, Argentina. The capital of Argentina is Buenos Aires.'
-
-============================================================
-REASONING TRACE
-============================================================
-
-┌─ Step 1
-│   Thought: I need to answer: 'What is the capital of the country where Messi was born?'. This requires two facts: 1) Where was Lionel Messi born? 2) What is the capital of that country? I don't have this information in my internal knowledge, so I need to fetch it. A factual, encyclopedic source like Wikipedia is suitable for this.
-│   Action: wikipedia
-│   Input: Lionel Messi birthplace
-│   Reason: Need factual birthplace and capital information.
-│   Observation: Page: Andrés Iniesta
-Summary: Andrés Iniesta Luján (Spanish pronunciation: [anˈdɾes iˈnjesta luˈxan]; born 11 May 1984) is a Spanish former professional footballer who played as a midfielder and spent... (+2798 more chars)
-└──────────────────────────────────────────────────────────
-
-┌─ Step 2
-│   Thought: The user question requires two facts: where Lionel Messi was born, and the capital of that country. The previous observations provided information about Andrés Iniesta and Brenden Aaronson, which are irrelevant to Messi's birthplace. I need to search for Messi's birthplace first, then the capital of that country. A factual search is needed.
-│   Action: search
-│   Input: Lionel Messi birthplace
-│   Reason: Previous observations do not contain the required information. Need to search for Messi's birthplace and then the capital.
-│   Observation: Rosario, Argentina
-└──────────────────────────────────────────────────────────
-
-┌─ Step 3
-│   Thought: I have the observation that Messi was born in Rosario, Argentina. Now I need the capital of Argentina. This is a factual, encyclopedic question, so I can use Wikipedia to get the capital city.
-│   Action: wikipedia
-│   Input: capital of Argentina
-│   Reason: I have Messi's birthplace from the observation, but I need the capital of Argentina to answer the question fully.
-│   Observation: Page: Buenos Aires
-Summary: Buenos Aires, officially the Autonomous City of Buenos Aires, is the capital and largest city of Argentina. It is located on the southwest of the Río de la Plata. Buenos Ai... (+2169 more chars)
-└──────────────────────────────────────────────────────────
-
-┌─ Step 4
-│   Thought: I have gathered the necessary information: Messi was born in Rosario, Argentina, and the capital of Argentina is Buenos Aires. This is sufficient to answer the question.
-│   Action: none
-│   Input:
-│   Reason: All required facts are confirmed from previous observations.
-└──────────────────────────────────────────────────────────
-
-
-============================================================
- FINAL ANSWER
-============================================================
-Lionel Messi was born in Rosario, Argentina. The capital of Argentina is Buenos Aires.
-
-============================================================
-Total iterations: 4
-============================================================
 
 
 
