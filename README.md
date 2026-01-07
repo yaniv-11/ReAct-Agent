@@ -1,4 +1,4 @@
-🧠 ReAct Agent with LangGraph: A Stateful, Tool-Driven Reasoning Agent
+ ReAct Agent with LangGraph: A Stateful, Tool-Driven Reasoning Agent
 This project implements a true ReAct (Reason → Act → Observe → Reason) agent using LangGraph, designed to perform multi-step reasoning, dynamic tool selection, and robust failure recovery.
 
 Unlike single-prompt LLM demos, this agent explicitly models state, control flow, and tool execution, making it closer to how real-world agentic AI systems are built.
@@ -6,9 +6,10 @@ Unlike single-prompt LLM demos, this agent explicitly models state, control flow
 
 <img width="376" height="273" alt="image" src="https://github.com/user-attachments/assets/b5baf740-6718-400d-b5cc-cc5694cbe6ee" />
 
+<img width="2121" height="3840" alt="think_act_observe_loop" src="https://github.com/user-attachments/assets/a959ab41-6103-4daf-9b2b-16ddc6f79c7c" />
 
 
-🎯 Why This Project Exists
+ Why This Project Exists
 Most LLM-based agents:
 
 ❌ Hide reasoning inside a single prompt
@@ -29,7 +30,7 @@ This project solves those issues by:
 
 ✅ Enforcing iteration limits and schema validation
 
-🏗️ Core Concepts Implemented
+ Core Concepts Implemented
 ReAct reasoning loop (Reason → Act → Observe)
 
 Graph-based orchestration with LangGraph
